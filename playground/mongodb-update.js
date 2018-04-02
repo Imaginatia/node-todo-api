@@ -7,15 +7,21 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, client) => {
   console.log('Connected to MongoDB server');
   const db = client.db('TodoApp');
 
-  db.collection('Todos').insertOne({
-    test: 'Walk the dog',
-    completed: true
-  }, (err, result) => {
-    if(err) {
-      return console.log('Unable to insert todo');
+  db.collection('Users').findOneAndUpdate({
+    test: 'Mike'
+  }, {
+    $set: {
+      test: 'Whisper'
+    },
+    $inc: {
+      age: 1
     }
-    console.log(JSON.stringify(result.ops, undefined, 2));
+  }, {
+    returnOriginal: false
+  }).then((result) => {
+    console.log(result);
+  }, (err) => {
+    console.log(err);
   });
-
-  client.close();
+  //client.close();
 });
