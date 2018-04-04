@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 var Todo = mongoose.model('Users', {
-  test: {
+  text: {
     type: String,
     required: true,
     minlength: 1,
