@@ -1,16 +1,17 @@
-const config = require('./config/config');
+require('./config/config');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const _ = require('lodash');
 const {ObjectID} = require('mongodb');
 
-const {mongoose} = require('./db/mongoose');
+var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
+var {authenticate} = require('./middleware/authenticate');
 
-var port = process.env.PORT;
 var app = express();
+const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
@@ -102,6 +103,10 @@ app.post('/users', (req, res) => {
   }).catch((e) => {
     res.status(400).send(e.message);
   });
+});
+
+app.get('/users/me', authenticate, (req, res) => {
+  res.send(req.user);
 });
 
 app.get('/users', (req, res) => {
